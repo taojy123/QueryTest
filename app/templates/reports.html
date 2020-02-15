@@ -1,0 +1,367 @@
+{% extends "reports/vue_base.html" %}
+
+
+{% block content %}
+  <div id="app">
+    <div>
+      <div style="float: left; width: 250px">
+        <el-menu default-active="" @select="menuSelect" style="height: 100vh;">
+          <div style="padding: 20px">
+            <img src="/static/logo.png" width="50px">
+            <span style="text-align: center; color: #003686; position: relative; top: -10px; font-size: 16px">康旗报表平台</span>
+          </div>
+          {% if user.is_superuser or '借呗' in user.roles %}
+            <el-menu-item index="借呗">
+              <i class="el-icon-menu"></i>
+              <span slot="title">借呗账务清算报表</span>
+            </el-menu-item>
+          {% endif %}
+          {% if user.is_superuser or '账管平台' in user.roles %}
+            <el-menu-item index="账管平台">
+              <i class="el-icon-menu"></i>
+              <span slot="title">账管平台报表</span>
+            </el-menu-item>
+          {% endif %}
+          {% if user.is_superuser or '串串钱包' in user.roles %}
+
+            {% if user.is_superuser or '概览数据查询' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/概览数据查询.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">串串钱包 概览数据 (动)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '概览数据查询静' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/概览数据查询静.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">串串钱包 概览数据 (静)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '基础数据查询' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/基础数据查询.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">串串钱包 基础数据 (动)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '基础数据查询静' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/基础数据查询静.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">串串钱包 基础数据 (静)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '产品数据查询' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/产品数据查询.cpt&product=pro001">
+                <i class="el-icon-menu"></i>
+                <span slot="title">串串钱包 飞贷产品数据</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '产品数据查询' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/产品数据查询.cpt&product=pro002">
+                <i class="el-icon-menu"></i>
+                <span slot="title">串串钱包 安逸花产品数据</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '客户列表分渠道查询' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/客户列表分渠道查询.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">客户列表分渠道查询</span>
+              </el-menu-item>
+            {% endif %}
+
+
+
+            {% if user.is_superuser or '主要渠道进件量和通过率日报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/主要渠道进件量和通过率日报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">主要渠道进件量和通过率(日)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '主要渠道进件量和通过率日报图表' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/主要渠道进件量和通过率日报图表.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">主要渠道进件通过率图表(日)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '主要渠道进件量和通过率周报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/主要渠道进件量和通过率周报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">主要渠道进件量和通过率(周)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '主要渠道进件量和通过率周报图表' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/主要渠道进件量和通过率周报图表.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">主要渠道进件通过率图表(周)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '主要渠道进件量和通过率月报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/主要渠道进件量和通过率月报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">主要渠道进件量和通过率(月)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '主要渠道进件量和通过率月报图表' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/主要渠道进件量和通过率月报图表.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">主要渠道进件通过率图表(月)</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '不同渠道百融信用分表现日报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/不同渠道百融信用分表现日报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">不同渠道百融信用分表现日报</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '不同渠道百融信用分表现周报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/不同渠道百融信用分表现周报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">不同渠道百融信用分表现周报</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '不同渠道百融信用分表现月报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/不同渠道百融信用分表现月报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">不同渠道百融信用分表现月报</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '分类规则拒绝查询日报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/分类规则拒绝查询日报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">分类规则拒绝查询日报</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '分类规则拒绝查询周报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/分类规则拒绝查询周报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">分类规则拒绝查询周报</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '分类规则拒绝查询月报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/分类规则拒绝查询月报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">分类规则拒绝查询月报</span>
+              </el-menu-item>
+            {% endif %}
+
+
+
+            {% if user.is_superuser or '三方数据调用明细' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/三方数据调用明细.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">三方数据调用明细</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '三方数据成本' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/三方数据成本.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">三方数据成本</span>
+              </el-menu-item>
+            {% endif %}
+
+
+
+            {% if user.is_superuser or '飞贷收入分配汇总月报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/飞贷收入分配汇总月报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">飞贷收入分配汇总月报</span>
+              </el-menu-item>
+            {% endif %}
+
+            {% if user.is_superuser or '飞贷收入分配明细月报' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/ccqb_report/飞贷收入分配明细月报.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">飞贷收入分配明细月报</span>
+              </el-menu-item>
+            {% endif %}
+
+
+          {% endif %}
+
+          {% if user.is_superuser or 'ISB' in user.roles %}
+
+            {% if user.is_superuser or '健康险统计报表' in user.cpt_names %}
+              <el-menu-item index="IFRAME:/webroot/decision/view/report?viewlet=report/isb_report/健康险统计报表.cpt">
+                <i class="el-icon-menu"></i>
+                <span slot="title">健康险统计报表</span>
+              </el-menu-item>
+            {% endif %}
+
+          {% endif %}
+
+          <el-menu-item index="">
+            <i class="el-icon-user-solid"></i>
+            <span slot="title">{{ user.username }} ({{ user.role }})</span>
+          </el-menu-item>
+          <el-menu-item index="logout">
+            <i class="el-icon-s-release"></i>
+            <span slot="title">登出</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+      <div style="float: left; width: calc(100vw - 275px)">
+
+        <div v-if="showArea === 1">
+
+          <div class="filter" style="margin: 30px">
+            <span style="color: gray">生成时间</span>
+            <el-date-picker
+              v-model="filterDate"
+              type="daterange"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd"
+              :picker-options="pickerOptions"
+              @change="fetchReports">
+            </el-date-picker>
+            <el-select v-model="filterName" filterable clearable placeholder="报表类型" @change="fetchReports">
+              <el-option v-for="name in names" :key="name" :label="name" :value="name"></el-option>
+            </el-select>
+          </div>
+
+          <div class="reports-table" style="padding-left: 30px">
+            <el-table :data="reports" border stripe>
+              <el-table-column prop="dt" label="生成时间" sortable width="180"></el-table-column>
+              <el-table-column prop="name" label="报表名称" sortable></el-table-column>
+              <el-table-column prop="param_info" label="生成参数"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button round size="mini" type="primary" @click="jump(scope.row.view_url)"><span title="数据可能同 Excel 不一致">浏览报表</span></el-button>
+                  <el-button round size="mini" type="success" @click="jump(scope.row.download_url)"><span :title="scope.row.param_info">下载报表</span></el-button>
+                  <el-button round size="mini" type="info" @click="jump(scope.row.res_url2)"><span :url="scope.row.res_url" title="数据与 Excel 相同">查看数据</span></el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+
+          <div class="loader" v-if="loading" style="text-align: center; margin: 20px">
+            <svg width="80px"  height="80px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-cube" style="background: none;"><g transform="translate(25,25)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#ffb6bb" transform="scale(1.2581 1.2581)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.3s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(75,25)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#ffe691" transform="scale(1.35895 1.35895)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.2s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(25,75)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#95d5ee" transform="scale(1.0073 1.0073)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="0s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(75,75)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#585872" transform="scale(1.00084 1.00084)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.1s" repeatCount="indefinite"></animateTransform></rect></g></svg>
+          </div>
+
+        </div>
+
+        <div v-if="showArea === 2">
+
+          <iframe :src="iframeSrc" style="height: 100vh; width: 100%; border: 0"></iframe>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block script %}
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          showArea: 1,
+          iframeSrc: '',
+          reports: [],
+          names: [],
+          role: '',
+          filterName: '',
+          filterDate: [moment().subtract(7, 'd').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
+          loading: true,
+          pickerOptions: {
+            shortcuts: [{
+              text: '最近一周',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', [start, end]);
+              }
+            }, {
+              text: '最近一个月',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                picker.$emit('pick', [start, end]);
+              }
+            }, {
+              text: '最近三个月',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                picker.$emit('pick', [start, end]);
+              }
+            }]
+          },
+        }
+      },
+      mounted() {
+        this.fetchReports()
+      },
+      methods: {
+        menuSelect(index){
+            if (index === 'logout'){
+                top.location.href = '/reports/logout/'
+                return
+            }
+            if (index.indexOf('IFRAME') > -1){
+                this.showArea = 2
+                this.iframeSrc = index.replace('IFRAME:', '')
+                return
+            }
+            this.showArea = 1
+            this.role = index
+            this.fetchReports()
+        },
+        fetchReports () {
+          this.loading = true
+          this.reports = []
+          this.names = []
+          begin = end = ''
+          if (this.filterDate) {
+              begin = this.filterDate[0]
+              end = this.filterDate[1]
+          }
+          $.ajax({
+              url: '/reports/api/reports/',
+              type: 'get',
+              data: {
+                  begin,
+                  end,
+                  filter_name: this.filterName,
+                  filter_role: this.role,
+              },
+              success: (res) => {
+                  console.log(res)
+                  this.reports = res.rs
+                  this.names = res.names
+                  this.loading = false
+              },
+          })
+        },
+        jump (url) {
+          window.open(url, "_blank")
+        }
+      }
+    })
+  </script>
+{% endblock %}
+

@@ -1,0 +1,134 @@
+{% extends "vue_base.html" %}
+
+
+{% block content %}
+  <div id="app">
+    <div style="padding: 30px">
+
+        <div v-if="showArea === 1">
+
+          <h1>日志详情</h1>
+
+          <div class="filter">
+
+              <el-date-picker
+                v-model="daterange"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="yyyy-MM-dd">
+              </el-date-picker>
+
+              <el-select v-model="productName" clearable placeholder="选择产品" :disabled="!daterange">
+                <el-option v-for="value in productNames" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-select v-model="result" clearable placeholder="选择查询状态" :disabled="!productName">
+                <el-option v-for="value in results" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-button type="primary" @click="fetch">查询</el-button>
+              <el-button type="success" @click="clear">清空</el-button>
+              <el-button type="info" @click="goBack">返回日志统计 >></el-button>
+          </div>
+
+          <div class="table">
+            <el-table :data="rs.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe>
+              <el-table-column prop="time" label="请求时间" sortable width="180"></el-table-column>
+              <el-table-column prop="product_name" label="产品名称"></el-table-column>
+              <el-table-column prop="product_code" label="产品编号"></el-table-column>
+              <el-table-column prop="result" label="查询结果"></el-table-column>
+              <el-table-column prop="query_id" label="请求序列号" width="280"></el-table-column>
+              <el-table-column prop="period" label="响应时间"></el-table-column>
+              <el-table-column prop="status_code" label="返回代码"></el-table-column>
+              <el-table-column prop="response" label="返回消息"></el-table-column>
+              <el-table-column prop="remark" label="备注"></el-table-column>
+            </el-table>
+          </div>
+
+          <div class="loader" v-if="loading" style="text-align: center; margin: 20px">
+            <svg width="80px"  height="80px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-cube" style="background: none;"><g transform="translate(25,25)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#ffb6bb" transform="scale(1.2581 1.2581)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.3s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(75,25)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#ffe691" transform="scale(1.35895 1.35895)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.2s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(25,75)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#95d5ee" transform="scale(1.0073 1.0073)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="0s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(75,75)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#585872" transform="scale(1.00084 1.00084)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.1s" repeatCount="indefinite"></animateTransform></rect></g></svg>
+          </div>
+
+          <div class="rs-pagination">
+            <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10,20,50,100]" :page-size="pageSize" layout="prev, pager, next, total, sizes" :total="rs.length">
+            </el-pagination>
+          </div>
+
+        </div>
+
+
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block script %}
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+            showArea: 1,
+            loading: false,
+            daterange: null,
+            productName: '',
+            result: '',
+            period: '',
+            productNames: ['个人资质等级', '沃信分'],
+            results: ['查得', '未查得', '出错', '超时'],
+            rs: [],
+            pageSize: 20, // 每页的数据条数
+            total: 0, // 总条数
+            currentPage: 1, // 当前页码
+        }
+      },
+      mounted() {
+          this.fetch()
+      },
+      methods: {
+          fetch() {
+              this.rs = []
+              if (!this.daterange) {
+                  return
+              }
+              this.loading = true
+              $.ajax({
+                  url: '/query_detail/api/',
+                  type: 'get',
+                  data: {
+                    start: this.daterange[0],
+                    end: this.daterange[1],
+                    product_name: this.productName,
+                    result: this.result,
+                  },
+                  success: (rs) => {
+                      console.log(rs)
+                      this.rs = rs
+                      this.total = rs.length
+                      this.currentPage = 1
+                      this.loading = false
+                  },
+              })
+          },
+          clear() {
+            this.daterange = null
+            this.productName = ''
+            this.result = ''
+          },
+          handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+            this.currentPage = 1;
+            this.pageSize = val;
+          },
+          handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
+            this.currentPage = val;
+          },
+          goBack() {
+              top.history.back()
+          },
+      }
+    })
+  </script>
+{% endblock %}
+

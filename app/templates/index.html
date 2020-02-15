@@ -1,0 +1,152 @@
+{% extends "vue_base.html" %}
+
+
+{% block content %}
+  <div id="app">
+    <div style="padding: 30px">
+
+        <div v-if="showArea === 1">
+
+          <h1>产品统计</h1>
+
+          <div class="filter">
+              <el-select v-model="year" clearable placeholder="按年统计">
+                <el-option v-for="value in years" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-select v-model="month" clearable placeholder="按月统计" :disabled="!year">
+                <el-option v-for="value in months" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-select v-model="day" clearable placeholder="按日统计" :disabled="!month">
+                <el-option v-for="value in days" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-select v-model="productName" clearable placeholder="选择产品" :disabled="!year">
+                <el-option v-for="value in productNames" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-select v-model="result" clearable placeholder="选择查询状态" :disabled="!productName">
+                <el-option v-for="value in results" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-select v-model="period" clearable placeholder="选择响应时间" :disabled="!result">
+                <el-option v-for="value in periods" :key="value" :value="value"></el-option>
+              </el-select>
+              <el-button type="primary" @click="fetch">查询</el-button>
+              <el-button type="success" @click="clear">清空</el-button>
+              <el-button type="info" @click="goDetail">查询日志详情 >></el-button>
+          </div>
+
+          <div class="table">
+            <el-table :data="rs.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe>
+              <el-table-column prop="time_code" label="统计时间" sortable></el-table-column>
+              <el-table-column prop="product_name" label="产品名称"></el-table-column>
+              <el-table-column prop="product_code" label="产品编号"></el-table-column>
+              <el-table-column prop="result" label="查询结果"></el-table-column>
+              <el-table-column prop="period" label="响应时间"></el-table-column>
+              <el-table-column prop="count" label="调用次数"></el-table-column>
+              <el-table-column prop="price_rule" label="计价方式"></el-table-column>
+              <el-table-column prop="unit_price" label="价格"></el-table-column>
+              <el-table-column prop="price" label="总价"></el-table-column>
+              <el-table-column prop="remark" label="备注"></el-table-column>
+            </el-table>
+          </div>
+
+          <div class="loader" v-if="loading" style="text-align: center; margin: 20px">
+            <svg width="80px"  height="80px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-cube" style="background: none;"><g transform="translate(25,25)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#ffb6bb" transform="scale(1.2581 1.2581)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.3s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(75,25)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#ffe691" transform="scale(1.35895 1.35895)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.2s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(25,75)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#95d5ee" transform="scale(1.0073 1.0073)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="0s" repeatCount="indefinite"></animateTransform></rect></g><g transform="translate(75,75)"><rect ng-attr-x="" ng-attr-y="" ng-attr-width="" ng-attr-height="" ng-attr-fill="" x="-17.5" y="-17.5" width="35" height="35" fill="#585872" transform="scale(1.00084 1.00084)"><animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.1s" repeatCount="indefinite"></animateTransform></rect></g></svg>
+          </div>
+
+          <div class="rs-pagination">
+            <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10,20,50,100]" :page-size="pageSize" layout="prev, pager, next, total, sizes" :total="rs.length">
+            </el-pagination>
+          </div>
+
+        </div>
+
+
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block script %}
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+            showArea: 1,
+            loading: false,
+            year: '',
+            month: '',
+            day: '',
+            productName: '',
+            result: '',
+            period: '',
+            years: ['2019', '2020'],
+            months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+            days: [
+                '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+                '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
+            ],
+            productNames: ['个人资质等级', '沃信分'],
+            results: ['查得', '未查得', '出错', '超时'],
+            periods: ['1秒以内', '1-3秒内', '3-6秒内', '6-10秒内', '10-15秒内', '15以上'],
+            rs: [],
+            pageSize: 20, // 每页的数据条数
+            total: 0, // 总条数
+            currentPage: 1, // 当前页码
+        }
+      },
+      mounted() {
+          this.fetch()
+      },
+      methods: {
+          fetch() {
+              this.rs = []
+              if (!this.year) {
+                  return
+              }
+              this.loading = true
+              $.ajax({
+                  url: '/query_statistics/api/',
+                  type: 'get',
+                  data: {
+                    year: this.year,
+                    month: this.month,
+                    day: this.day,
+                    product_name: this.productName,
+                    result: this.result,
+                    period: this.period,
+                  },
+                  success: (rs) => {
+                      console.log(rs)
+                      this.rs = rs
+                      this.total = rs.length
+                      this.currentPage = 1
+                      this.loading = false
+                  },
+              })
+          },
+          clear() {
+            this.year = ''
+            this.month = ''
+            this.day = ''
+            this.productName = ''
+            this.result = ''
+            this.period = ''
+          },
+          handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+            this.currentPage = 1;
+            this.pageSize = val;
+          },
+          handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
+            this.currentPage = val;
+          },
+          goDetail() {
+              top.location.href = '/detail/'
+          }
+      }
+    })
+  </script>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="{% static 'element.css' %}">
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    }
+  </style>
+
+  {% block style %}
+  {% endblock %}
+
+</head>
+<body>
+
+  {% block content %}
+  {% endblock %}
+
+  <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'moment.js' %}"></script>
+  <script src="{% static 'vue.js' %}"></script>
+  <script src="{% static 'element.js' %}"></script>
+
+  {% block script %}
+  {% endblock %}
+
+</body>
+
+</html>

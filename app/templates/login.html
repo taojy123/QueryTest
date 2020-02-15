@@ -1,0 +1,104 @@
+{% extends "reports/vue_base.html" %}
+
+
+{% block style %}
+  <style>
+    .el-card__header{
+      background: #409EFF;
+      color: white;
+    }
+    .el-button--text{
+      color: #abd5ff;
+    }
+  </style>
+{% endblock %}
+
+
+{% block content %}
+  <div id="app">
+    {% if msg %}
+      <el-alert title="{{ msg }}" type="error" center show-icon></el-alert>
+    {% endif %}
+    <div style="width: 400px; left: 50%; top: 20%; margin-left: -200px; position: absolute">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>康旗报表系统</span>
+          <el-button style="float: right; padding: 3px 0" type="text">请登录</el-button>
+        </div>
+        <div>
+          <el-form ref="form" label-width="80px" method="post">
+            <el-form-item label="用户名：">
+              <el-input name="username" v-model="username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码：">
+              <el-input name="password" type="password" v-model="password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">立即登录</el-button>
+            </el-form-item>
+          </el-form>
+          <div style="display: none">
+            <p>-- {{ h }} --</p>
+            <p>-- {{ request.get_host }} --</p>
+            <p>-- {{ sso_url }} --</p>
+          </div>
+        </div>
+      </el-card>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block script %}
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+            username: '',
+            password: '',
+        }
+      },
+      methods:{
+        onSubmit() {
+            var username = $('[name=username]').val()
+            var password = $('[name=password]').val()
+            var url = "{{ sso_url }}?validity=-2&fine_username=" + username + "&fine_password=" + password
+            $.ajax({
+                url: url,//单点登录的管理平台报表服务器
+                timeout: 2000,//超时时间（单位：毫秒）
+                dataType:"jsonp",//跨域采用jsonp方式
+                jsonp:"callback",
+                complete: function () {
+                    $('form.el-form').submit()
+                },
+            })
+            // $.ajax({
+            //     url: 'http://127.0.0.1:9000',
+            //     timeout: 1000,
+            //     complete: function (res) {
+            //         console.log(res)
+            //         console.log(res.responseText)
+            //         if (res.responseText !== '1234') {
+            //             alert('请插入加密锁，并打开加密驱动程序！')
+            //             return
+            //         }
+            //         var username = $('[name=username]').val()
+            //         var password = $('[name=password]').val()
+            //         var url = "{{ sso_url }}?validity=-2&fine_username=" + username + "&fine_password=" + password
+            //         $.ajax({
+            //             url: url,//单点登录的管理平台报表服务器
+            //             timeout: 2000,//超时时间（单位：毫秒）
+            //             dataType:"jsonp",//跨域采用jsonp方式
+            //             jsonp:"callback",
+            //             complete: function () {
+            //                 $('form.el-form').submit()
+            //             },
+            //         })
+            //     },
+            // })
+        }
+      }
+    })
+  </script>
+{% endblock %}
