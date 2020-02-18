@@ -1,8 +1,10 @@
-from django.http import JsonResponse
+from cassandra.cqlengine import CQLEngineException
+from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound
 from django.shortcuts import render
 from django.utils import timezone
 
-from app.cassandra_models import QueryStatistics, QueryDetail
+from app.cassandra_models import QueryStatistics, QueryDetail, Best
+from app.models import Trial
 
 
 def index(request):
@@ -13,7 +15,7 @@ def detail(request):
     return render(request, 'detail.html', locals())
 
 
-def query_statistics_api(request):
+def api_query_statistics(request):
 
     year = request.GET.get('year')
     month = request.GET.get('month')
@@ -65,7 +67,7 @@ def query_statistics_api(request):
     return JsonResponse(rs, safe=False)
 
 
-def query_detail_api(request):
+def api_query_detail(request):
 
     start = request.GET.get('start')
     end = request.GET.get('end')
@@ -112,3 +114,69 @@ def query_detail_api(request):
             })
 
     return JsonResponse(rs, safe=False)
+
+
+def api_best_day(request):
+    product_name = request.GET.get('product_name')
+    try:
+        r = Best.objects.filter(product_name=product_name, category='日最高访问量').limit(1)[0]
+    except IndexError as e:
+        return HttpResponseBadRequest
+    r = {
+        'value': r.value,
+        'time': r.time,
+    }
+    return JsonResponse(r)
+
+
+def api_best_month(request):
+    product_name = request.GET.get('product_name')
+    try:
+        r = Best.objects.filter(product_name=product_name, category='月最高访问量').limit(1)[0]
+    except IndexError as e:
+        return HttpResponseNotFound()
+    r = {
+        'value': r.value,
+        'time': r.time,
+    }
+    return JsonResponse(r)
+
+
+def api_total_year(request):
+    product_name = request.GET.get('product_name')
+    try:
+        r = Best.objects.filter(product_name=product_name, category='当年累计访问量').limit(1)[0]
+    except IndexError as e:
+        return HttpResponseNotFound()
+    r = {
+        'value': r.value,
+        'time': r.time,
+    }
+    return JsonResponse(r)
+
+
+def api_trail(request):
+    if request.method == 'POST':
+        product_name = request.POST['product_name']
+        name = request.POST['name']
+        mobile = request.POST['mobile']
+        company_name = request.POST['company_name']
+        company_domain = request.POST['company_domain']
+        company_city = request.POST['company_city']
+        company_address = request.POST['company_address']
+        company_email = request.POST['company_email']
+        detail = request.POST['detail']
+        Trial.objects.create(
+            product_name=product_name,
+            name=name,
+            mobile=mobile,
+            company_name=company_name,
+            company_domain=company_domain,
+            company_city=company_city,
+            company_address=company_address,
+            company_email=company_email,
+            detail=detail,
+        )
+        return HttpResponse()
+    else:
+        return HttpResponseNotAllowed(['POST'])

@@ -20,7 +20,11 @@ from app.views import *
 urlpatterns = [
     path('', index),
     path('detail/', detail),
-    path('query_statistics/api/', query_statistics_api),
-    path('query_detail/api/', query_detail_api),
+    path('api/query_statistics/', api_query_statistics),
+    path('api/query_detail/', api_query_detail),
+    path('api/best_day/', api_best_day),
+    path('api/best_month/', api_best_month),
+    path('api/total_year/', api_total_year),
+    path('api/trail/', api_trail),
     path('admin/', admin.site.urls),
 ]

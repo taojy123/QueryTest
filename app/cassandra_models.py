@@ -64,6 +64,24 @@ class QueryDetail(Model):
     created_at = columns.DateTime(default=timezone.now)  # 生成时间
 
 
+class Best(Model):
+    """
+    各产品的：
+    日最高访问量
+    月最高访问量
+    当年累计访问量
+    """
+
+    __table_name__ = 'best'
+
+    product_name = columns.Text(primary_key=True)  # 产品名称
+    category = columns.Text(primary_key=True)  # 类别: 日最高访问量、月最高访问量、当年累计访问量
+    value = columns.Text()  # 统计数值
+    time = columns.Text(required=False)  # 统计时间点: 20200124、202002
+    remark = columns.Text(required=False)  # 备注
+    created_at = columns.DateTime(default=timezone.now)  # 生成时间
+
+
 print('cassandra database init')
 
 os.environ.setdefault('CQLENG_ALLOW_SCHEMA_MANAGEMENT', 'CQLENG_ALLOW_SCHEMA_MANAGEMENT')
@@ -73,6 +91,7 @@ keyspace = 'taiqiyun'
 connection.setup(hosts, keyspace, protocol_version=3)
 sync_table(QueryStatistics)
 sync_table(QueryDetail)
+sync_table(Best)
 
 print('database synced')
 
@@ -134,3 +153,23 @@ def fake_data():
                     period=period,
                     product_code=product_code,
                 )
+
+    product_names = ['个人资质等级', '沃信分']
+    categories = ['日最高访问量', '月最高访问量', '当年累计访问量']
+    for product_name in product_names:
+        for category in categories:
+            if category == '日最高访问量':
+                time = '20200124'
+            elif category == '月最高访问量':
+                time = '202002'
+            else:
+                time = '2020'
+            Best.create(
+                product_name=product_name,
+                category=category,
+                value=str(random.randint(10000, 100000)),
+                time=time,
+            )
+
+    print('fake finish')
+
