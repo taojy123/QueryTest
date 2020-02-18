@@ -121,7 +121,7 @@ def api_best_day(request):
     try:
         r = Best.objects.filter(product_name=product_name, category='日最高访问量').limit(1)[0]
     except IndexError as e:
-        return HttpResponseBadRequest
+        return HttpResponseNotFound()
     r = {
         'value': r.value,
         'time': r.time,
