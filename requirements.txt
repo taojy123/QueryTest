@@ -1,6 +1,7 @@
 # python3
 
 django
+django-cors-headers
 cassandra-driver
 eave
 
