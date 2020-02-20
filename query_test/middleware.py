@@ -13,6 +13,7 @@ CORS_ALLOW_HEADERS = [
     'x-frame-options',
 ]
 
+
 class CorsMiddleware(MiddlewareMixin):
 
     def process_response(self, request, response):
