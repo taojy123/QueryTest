@@ -1,4 +1,4 @@
-
+import datetime
 import os
 import random
 import uuid
@@ -6,15 +6,6 @@ import uuid
 from cassandra.cqlengine import columns, connection
 from cassandra.cqlengine.management import sync_table
 from cassandra.cqlengine.models import Model
-from django.utils import timezone
-
-
-def fix_to_localtime(t):
-    if not t:
-        return None
-    assert timezone.is_naive(t)
-    t = timezone.make_aware(t, timezone.utc)
-    return timezone.localtime(t)
 
 
 class QueryStatistics(Model):
@@ -36,7 +27,7 @@ class QueryStatistics(Model):
     price = columns.VarInt(default=0)  # 总价
     product_code = columns.Text(required=False)  # 产品编码
     remark = columns.Text(required=False)  # 备注
-    created_at = columns.DateTime(default=timezone.now)  # 生成时间
+    created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
 
 
 class QueryDetail(Model):
@@ -61,7 +52,7 @@ class QueryDetail(Model):
     period = columns.Text(required=False)  # 响应时间
     product_code = columns.Text(required=False)  # 产品编码
     remark = columns.Text(required=False)  # 备注
-    created_at = columns.DateTime(default=timezone.now)  # 生成时间
+    created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
 
 
 class Best(Model):
@@ -79,7 +70,7 @@ class Best(Model):
     value = columns.Text()  # 统计数值
     time = columns.Text(required=False)  # 统计时间点: 20200124、202002
     remark = columns.Text(required=False)  # 备注
-    created_at = columns.DateTime(default=timezone.now)  # 生成时间
+    created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
 
 
 print('cassandra database init')
@@ -103,7 +94,7 @@ def fake_data():
 
     for i in range(400):
 
-        now = timezone.localtime() - timezone.timedelta(i)
+        now = datetime.datetime.now() - datetime.timedelta(i)
 
         for j in range(5):
             print('QueryStatistics', i)

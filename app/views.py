@@ -1,5 +1,7 @@
+import calendar
+
 from cassandra.cqlengine import CQLEngineException
-from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound
+from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -67,6 +69,132 @@ def api_query_statistics(request):
     return JsonResponse(rs, safe=False)
 
 
+def api_year_statistics(request):
+
+    year = request.GET.get('year')
+    product_name = request.GET.get('product_name')
+    result = request.GET.get('result')
+    period = request.GET.get('period')
+
+    if not year:
+        return HttpResponseBadRequest('miss year')
+
+    filter_args = {}
+
+    if product_name:
+        filter_args['product_name'] = product_name
+
+        if result:
+            filter_args['result'] = result
+
+            if period:
+                filter_args['period'] = period
+    rs = []
+    for month in range(1, 13):
+        time_code = '%s%02d' % (year, month)
+        filter_args['time_code'] = time_code
+
+        qs = QueryStatistics.objects.filter(**filter_args).limit(1000)
+
+        count = 0
+        for r in qs:
+            count += r.count
+
+        rs.append({
+            'time_code': time_code,
+            'count': count,
+        })
+
+    return JsonResponse(rs, safe=False)
+
+
+def api_month_statistics(request):
+
+    year = request.GET.get('year')
+    month = request.GET.get('month')
+    product_name = request.GET.get('product_name')
+    result = request.GET.get('result')
+    period = request.GET.get('period')
+
+    if not year:
+        return HttpResponseBadRequest('miss year')
+
+    if not month:
+        month = timezone.datetime.now().month - 1
+        if month <= 0:
+            month = 12
+        month = '%02d' % month
+
+    filter_args = {}
+
+    if product_name:
+        filter_args['product_name'] = product_name
+
+        if result:
+            filter_args['result'] = result
+
+            if period:
+                filter_args['period'] = period
+
+    days = calendar.monthrange(int(year), int(month))[1]
+    rs = []
+    for day in range(1, days + 1):
+        time_code = '%s%s%02d' % (year, month, day)
+        filter_args['time_code'] = time_code
+
+        qs = QueryStatistics.objects.filter(**filter_args).limit(1000)
+
+        count = 0
+        for r in qs:
+            count += r.count
+
+        rs.append({
+            'time_code': time_code,
+            'count': count,
+        })
+
+    return JsonResponse(rs, safe=False)
+
+
+def api_day_statistics(request):
+
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+    product_name = request.GET.get('product_name')
+    result = request.GET.get('result')
+
+    start = timezone.datetime.strptime(start, '%Y-%m-%d')
+    end = timezone.datetime.strptime(end, '%Y-%m-%d')
+
+    rs = []
+
+    for i in range(500):
+        day = start + timezone.timedelta(days=i)
+        if day > end:
+            break
+
+        time_code = day.strftime('%Y%m%d')
+        filter_args = {'time_code': time_code}
+
+        if product_name:
+            filter_args['product_name'] = product_name
+
+            if result:
+                filter_args['result'] = result
+
+        qs = QueryStatistics.objects.filter(**filter_args).limit(1000)
+        count = 0
+        for r in qs:
+            count += r.count
+
+        rs.append({
+            'time_code': time_code,
+            'count': count,
+        })
+
+    return JsonResponse(rs, safe=False)
+
+
 def api_query_detail(request):
 
     start = request.GET.get('start')
@@ -80,11 +208,11 @@ def api_query_detail(request):
     rs = []
 
     for i in range(500):
-        start += timezone.timedelta(days=i)
-        if start > end:
+        day = start + timezone.timedelta(days=i)
+        if day > end:
             break
 
-        time_code = start.strftime('%Y%m%d')
+        time_code = day.strftime('%Y%m%d')
         filter_args = {'time_code': time_code}
 
         if product_name:

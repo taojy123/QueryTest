@@ -180,12 +180,15 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
       </p>
 
       <ul>
-          <li><a href="#4374793040" class="scroll-to">新产品试用申请</a></li>
-          <li><a href="#4383033808" class="scroll-to">日志统计</a></li>
-          <li><a href="#4383034064" class="scroll-to">日志详情</a></li>
-          <li><a href="#4383034320" class="scroll-to">日最高访问量</a></li>
-          <li><a href="#4383033424" class="scroll-to">月最高访问量</a></li>
-          <li><a href="#4383034960" class="scroll-to">当年累计访问量</a></li>
+          <li><a href="#4506517840" class="scroll-to">新产品试用申请</a></li>
+          <li><a href="#4514762512" class="scroll-to">日志统计</a></li>
+          <li><a href="#4514779216" class="scroll-to">年度趋势</a></li>
+          <li><a href="#4514779600" class="scroll-to">月度趋势</a></li>
+          <li><a href="#4514779920" class="scroll-to">每日趋势</a></li>
+          <li><a href="#4514780304" class="scroll-to">日志详情</a></li>
+          <li><a href="#4514780432" class="scroll-to">日最高访问量</a></li>
+          <li><a href="#4514780560" class="scroll-to">月最高访问量</a></li>
+          <li><a href="#4514780688" class="scroll-to">当年累计访问量</a></li>
       </ul>
 
       <hr>
@@ -193,7 +196,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 
 
 
-        <h1 id="4374793040">新产品试用申请</h1>
+        <h1 id="4506517840">新产品试用申请</h1>
 
           <div class="endpoint post">/api/trail/</div>
 
@@ -505,7 +508,7 @@ viewBox="0 0 500 500"
         <hr>
 
 
-        <h1 id="4383033808">日志统计</h1>
+        <h1 id="4514762512">日志统计</h1>
 
           <div class="endpoint get">/api/query_statistics/</div>
 
@@ -603,27 +606,27 @@ viewBox="0 0 500 500"
                 示例返回结果:
             </p>
             <pre><code class="lang-json">[{
-	"time_code": "20190403",
-	"product_name": "个人资质等级",
-	"result": "未查得",
-	"period": "1秒以内",
-	"count": 1,
-	"price_rule": "查询计费",
-	"unit_price": 12,
-	"price": 12,
-	"product_code": "002",
-	"remark": null
+    "time_code": "20190403",
+    "product_name": "个人资质等级",
+    "result": "未查得",
+    "period": "1秒以内",
+    "count": 1,
+    "price_rule": "查询计费",
+    "unit_price": 12,
+    "price": 12,
+    "product_code": "002",
+    "remark": null
 }, {
-	"time_code": "20190403",
-	"product_name": "个人资质等级",
-	"result": "超时",
-	"period": "6-10秒内",
-	"count": 8,
-	"price_rule": "查得计费",
-	"unit_price": 13,
-	"price": 104,
-	"product_code": "002",
-	"remark": null
+    "time_code": "20190403",
+    "product_name": "个人资质等级",
+    "result": "超时",
+    "period": "6-10秒内",
+    "count": 8,
+    "price_rule": "查得计费",
+    "unit_price": 13,
+    "price": 104,
+    "product_code": "002",
+    "remark": null
 }]</code></pre>
 
             <div class="alert alert-warning">
@@ -635,7 +638,350 @@ viewBox="0 0 500 500"
         <hr>
 
 
-        <h1 id="4383034064">日志详情</h1>
+        <h1 id="4514779216">年度趋势</h1>
+
+          <div class="endpoint get">/api/year_statistics/</div>
+
+
+            <div class="alert alert-ee"><p>展示一年中每个月的调用次数</p>
+</div>
+
+
+            <table>
+              <thead>
+                <tr>
+                    <th>Query 参数</th>
+                    <th>类型</th>
+                    <th>描述</th>
+                    <th>必须</th>
+                    <th>默认值</th>
+                    <th>示例</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td><code>year</code></td>
+                    <td><em>string</em></td>
+                    <td>年份</td>
+                    <td><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="15" height="15" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 500 500"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#4D7800;stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+    .str1 {stroke:#6FAE00;stroke-width:30}
+    .fil0 {fill:none}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <polyline class="fil0 str0" points="130,238 218,326 370,174 "/>
+  <circle class="fil0 str1" cx="250" cy="250" r="195"/>
+ </g>
+</svg>
+</td>
+                    <td></td>
+                    <td>2020</td>
+                  </tr>
+                  <tr>
+                    <td><code>product_name</code></td>
+                    <td><em>string</em></td>
+                    <td>产品名称</td>
+                    <td></td>
+                    <td></td>
+                    <td>沃信分</td>
+                  </tr>
+                  <tr>
+                    <td><code>result</code></td>
+                    <td><em>string</em></td>
+                    <td>查询状态</td>
+                    <td></td>
+                    <td></td>
+                    <td>未查得</td>
+                  </tr>
+                  <tr>
+                    <td><code>period</code></td>
+                    <td><em>string</em></td>
+                    <td>响应时间</td>
+                    <td></td>
+                    <td></td>
+                    <td>1-3秒内</td>
+                  </tr>
+              </tbody>
+            </table>
+
+
+
+
+            <p>
+                示例返回结果:
+            </p>
+            <pre><code class="lang-json">[{
+        "time_code": "202001",
+        "count": 246
+    },
+    {
+        "time_code": "202002",
+        "count": 161
+    },
+    {
+        "time_code": "202003",
+        "count": 0
+    },
+    {
+        "time_code": "202004",
+        "count": 0
+    }
+]</code></pre>
+
+
+
+        <hr>
+
+
+        <h1 id="4514779600">月度趋势</h1>
+
+          <div class="endpoint get">/api/month_statistics/</div>
+
+
+            <div class="alert alert-ee"><p>展示一个月中每天的调用次数</p>
+</div>
+
+
+            <table>
+              <thead>
+                <tr>
+                    <th>Query 参数</th>
+                    <th>类型</th>
+                    <th>描述</th>
+                    <th>必须</th>
+                    <th>默认值</th>
+                    <th>示例</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td><code>year</code></td>
+                    <td><em>string</em></td>
+                    <td>年份</td>
+                    <td><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="15" height="15" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 500 500"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#4D7800;stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+    .str1 {stroke:#6FAE00;stroke-width:30}
+    .fil0 {fill:none}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <polyline class="fil0 str0" points="130,238 218,326 370,174 "/>
+  <circle class="fil0 str1" cx="250" cy="250" r="195"/>
+ </g>
+</svg>
+</td>
+                    <td></td>
+                    <td>2020</td>
+                  </tr>
+                  <tr>
+                    <td><code>month</code></td>
+                    <td><em>string</em></td>
+                    <td>月份（如果不传则为上一个月）</td>
+                    <td></td>
+                    <td></td>
+                    <td>02</td>
+                  </tr>
+                  <tr>
+                    <td><code>product_name</code></td>
+                    <td><em>string</em></td>
+                    <td>产品名称</td>
+                    <td></td>
+                    <td></td>
+                    <td>沃信分</td>
+                  </tr>
+                  <tr>
+                    <td><code>result</code></td>
+                    <td><em>string</em></td>
+                    <td>查询状态</td>
+                    <td></td>
+                    <td></td>
+                    <td>未查得</td>
+                  </tr>
+                  <tr>
+                    <td><code>period</code></td>
+                    <td><em>string</em></td>
+                    <td>响应时间</td>
+                    <td></td>
+                    <td></td>
+                    <td>1-3秒内</td>
+                  </tr>
+              </tbody>
+            </table>
+
+
+
+
+            <p>
+                示例返回结果:
+            </p>
+            <pre><code class="lang-json">[{
+        "time_code": "20200101",
+        "count": 87
+    },
+    {
+        "time_code": "20200102",
+        "count": 78
+    },
+    {
+        "time_code": "20200103",
+        "count": 76
+    }
+]</code></pre>
+
+
+
+        <hr>
+
+
+        <h1 id="4514779920">每日趋势</h1>
+
+          <div class="endpoint get">/api/day_statistics/</div>
+
+
+            <div class="alert alert-ee"><p>展示一段时间内每天的调用次数</p>
+</div>
+
+
+            <table>
+              <thead>
+                <tr>
+                    <th>Query 参数</th>
+                    <th>类型</th>
+                    <th>描述</th>
+                    <th>必须</th>
+                    <th>默认值</th>
+                    <th>示例</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td><code>start</code></td>
+                    <td><em>string</em></td>
+                    <td>起始日期</td>
+                    <td><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="15" height="15" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 500 500"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#4D7800;stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+    .str1 {stroke:#6FAE00;stroke-width:30}
+    .fil0 {fill:none}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <polyline class="fil0 str0" points="130,238 218,326 370,174 "/>
+  <circle class="fil0 str1" cx="250" cy="250" r="195"/>
+ </g>
+</svg>
+</td>
+                    <td></td>
+                    <td>2020-01-29</td>
+                  </tr>
+                  <tr>
+                    <td><code>end</code></td>
+                    <td><em>string</em></td>
+                    <td>终止日期</td>
+                    <td><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="15" height="15" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 500 500"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#4D7800;stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+    .str1 {stroke:#6FAE00;stroke-width:30}
+    .fil0 {fill:none}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <polyline class="fil0 str0" points="130,238 218,326 370,174 "/>
+  <circle class="fil0 str1" cx="250" cy="250" r="195"/>
+ </g>
+</svg>
+</td>
+                    <td></td>
+                    <td>2020-02-01</td>
+                  </tr>
+                  <tr>
+                    <td><code>product_name</code></td>
+                    <td><em>string</em></td>
+                    <td>产品名称</td>
+                    <td></td>
+                    <td></td>
+                    <td>沃信分</td>
+                  </tr>
+                  <tr>
+                    <td><code>result</code></td>
+                    <td><em>string</em></td>
+                    <td>查询状态</td>
+                    <td></td>
+                    <td></td>
+                    <td>查得</td>
+                  </tr>
+              </tbody>
+            </table>
+
+
+
+
+            <p>
+                示例返回结果:
+            </p>
+            <pre><code class="lang-json">[{
+        "time_code": "20200129",
+        "count": 77
+    },
+    {
+        "time_code": "20200130",
+        "count": 80
+    },
+    {
+        "time_code": "20200131",
+        "count": 46
+    },
+    {
+        "time_code": "20200201",
+        "count": 50
+    }
+]</code></pre>
+
+
+
+        <hr>
+
+
+        <h1 id="4514780304">日志详情</h1>
 
           <div class="endpoint get">/api/query_detail/</div>
 
@@ -738,35 +1084,35 @@ viewBox="0 0 500 500"
                 示例返回结果:
             </p>
             <pre><code class="lang-json">[{
-	"time_code": "20200212",
-	"product_name": "沃信分",
-	"result": "出错",
-	"time": "2020-02-12 05:11:51",
-	"query_id": "0325978c70f04bdf94f64cc48d7111c5",
-	"price_rule": "查询计费",
-	"unit_price": 17,
-	"request": "{}",
-	"response": "{}",
-	"status_code": "200",
-	"return_time": "6",
-	"period": "9",
-	"product_code": "002",
-	"remark": null
+    "time_code": "20200212",
+    "product_name": "沃信分",
+    "result": "出错",
+    "time": "2020-02-12 05:11:51",
+    "query_id": "0325978c70f04bdf94f64cc48d7111c5",
+    "price_rule": "查询计费",
+    "unit_price": 17,
+    "request": "{}",
+    "response": "{}",
+    "status_code": "200",
+    "return_time": "6",
+    "period": "9",
+    "product_code": "002",
+    "remark": null
 }, {
-	"time_code": "20200212",
-	"product_name": "沃信分",
-	"result": "查得",
-	"time": "2020-02-12 05:11:51",
-	"query_id": "09d7574a5aba418cad1c239abb95e6ab",
-	"price_rule": "字段计费",
-	"unit_price": 8,
-	"request": "{}",
-	"response": "{}",
-	"status_code": "200",
-	"return_time": "8",
-	"period": "3",
-	"product_code": "001",
-	"remark": null
+    "time_code": "20200212",
+    "product_name": "沃信分",
+    "result": "查得",
+    "time": "2020-02-12 05:11:51",
+    "query_id": "09d7574a5aba418cad1c239abb95e6ab",
+    "price_rule": "字段计费",
+    "unit_price": 8,
+    "request": "{}",
+    "response": "{}",
+    "status_code": "200",
+    "return_time": "8",
+    "period": "3",
+    "product_code": "001",
+    "remark": null
 }]</code></pre>
 
             <div class="alert alert-warning">
@@ -778,7 +1124,7 @@ viewBox="0 0 500 500"
         <hr>
 
 
-        <h1 id="4383034320">日最高访问量</h1>
+        <h1 id="4514780432">日最高访问量</h1>
 
           <div class="endpoint get">/api/best_day/</div>
 
@@ -845,7 +1191,7 @@ viewBox="0 0 500 500"
         <hr>
 
 
-        <h1 id="4383033424">月最高访问量</h1>
+        <h1 id="4514780560">月最高访问量</h1>
 
           <div class="endpoint get">/api/best_month/</div>
 
@@ -912,7 +1258,7 @@ viewBox="0 0 500 500"
         <hr>
 
 
-        <h1 id="4383034960">当年累计访问量</h1>
+        <h1 id="4514780688">当年累计访问量</h1>
 
           <div class="endpoint get">/api/total_year/</div>
 
@@ -977,7 +1323,6 @@ viewBox="0 0 500 500"
 
 
         <hr>
-
 
 
 
