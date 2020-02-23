@@ -76,9 +76,12 @@ class Best(Model):
 print('cassandra database init')
 
 os.environ.setdefault('CQLENG_ALLOW_SCHEMA_MANAGEMENT', 'CQLENG_ALLOW_SCHEMA_MANAGEMENT')
-cass_host = os.getenv('CASS_HOST', 'taojy123.com')
-hosts = [cass_host]
 keyspace = 'taiqiyun'
+hosts = ['172.23.43.16', '172.23.43.21', '172.23.43.22']
+
+TI_HOST = os.getenv('TI_HOST')
+if TI_HOST == 'taojy123.com':
+    hosts = ['taojy123.com']
 
 connection.setup(hosts, keyspace, protocol_version=3)
 sync_table(QueryStatistics)

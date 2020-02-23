@@ -3,7 +3,7 @@ from eave import *
 doc = Doc(
     title='接口文档',
     version='1.0.0',
-    host='http://taojy123.com:8000',
+    host='http://172.23.43.15:8881',
     description='',
 )
 
