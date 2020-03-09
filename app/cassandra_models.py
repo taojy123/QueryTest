@@ -67,8 +67,15 @@ class QueryDetail(Model):
         保存冗余数据
         """
         detail2 = QueryDetail2()
+        
         for name, value in self.items():
-            setattr(detail2, name, value)
+            if detail2._columns[name].primary_key:
+                setattr(detail2, name, value)
+        detail2.save()
+        
+        for name, value in self.items():
+            if not detail2._columns[name].primary_key:
+                setattr(detail2, name, value)
         detail2.save()
 
 
