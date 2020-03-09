@@ -5,7 +5,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed, Http
 from django.shortcuts import render
 from django.utils import timezone
 
-from app.cassandra_models import QueryStatistics, QueryDetail, Best
+from app.cassandra_models import QueryStatistics, QueryDetail2, Best
 from app.models import Trial
 
 
@@ -221,7 +221,7 @@ def api_query_detail(request):
             if result:
                 filter_args['result'] = result
 
-        qs = QueryDetail.objects.filter(**filter_args).limit(1000)
+        qs = QueryDetail2.objects.filter(**filter_args).limit(1000)
 
         for r in qs:
             rs.append({
