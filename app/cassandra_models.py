@@ -67,7 +67,7 @@ class QueryDetail(Model):
         detail2.save()
 
 
-class QueryDetail2(QueryDetail):
+class QueryDetail2(Model):
     """
     请求详情日志
     冗余
@@ -76,12 +76,23 @@ class QueryDetail2(QueryDetail):
 
     __table_name__ = 'query_detail2'
 
-    time_code = columns.Text(primary_key=True)
-    product_name = columns.Text(primary_key=True)
-    result = columns.Text(primary_key=True)
-    time = columns.Text(primary_key=True)
-    query_id = columns.Text(primary_key=True)
-
+    # QueryDetail 保持一致
+    time_code = columns.Text(required=True)  # 统计日期 20200124
+    product_name = columns.Text(required=True)  # 产品名称
+    result = columns.Text(required=True)  # 查询结果: 查得、未查得、出错、超时
+    query_id = columns.Text(primary_key=True)  # 请求序列号
+    time = columns.Text(required=False)  # 请求时间: 2020-02-21 10:20:40
+    price_rule = columns.Text(required=False)  # 计价方式: 查得计费、字段计费、查询计费（由产品决定）
+    unit_price = columns.VarInt(default=0)  # 单价
+    request = columns.Text(required=False)  # 请求数据（脱敏后）
+    response = columns.Text(required=False)  # 响应数据（脱敏后）
+    status_code = columns.Text(required=False)  # 返回代码
+    return_time = columns.Text(required=False)  # 返回时间
+    period = columns.Text(required=False)  # 响应时间（毫秒）
+    product_code = columns.Text(required=False)  # 产品编码
+    remark = columns.Text(required=False)  # 备注
+    created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
+    
     def save_redundant(self):
         pass
 
