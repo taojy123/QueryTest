@@ -188,7 +188,10 @@ def fake_data():
                     period=period,
                     product_code=product_code,
                 )
+    print('fake finish')
 
+
+def fake_data2():
     product_names = ['个人资质等级', '沃信分']
     categories = ['日最高访问量', '月最高访问量', '当年累计访问量']
     for product_name in product_names:
@@ -205,6 +208,4 @@ def fake_data():
                 value=str(random.randint(10000, 100000)),
                 time=time,
             )
-
-    print('fake finish')
 

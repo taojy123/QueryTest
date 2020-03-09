@@ -65,12 +65,12 @@ for msg in consumer:
     unit_price = 0
     request = json.dumps(message['request'])
     response = json.dumps(message['response'])
-    status_code = message['response']['status']
+    status_code = str(message['response']['status'])
     return_time = finished_time.strftime('%Y-%m-%d %H:%M:%S')
     period = finished_at - started_at  # ms
     product_code = message['service']['name']
     
-    if status_code >= 400:
+    if int(status_code) >= 400:
         result = '出错'
 
     detail = QueryDetail.create(
