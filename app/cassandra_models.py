@@ -105,7 +105,7 @@ class Best(Model):
 
     product_name = columns.Text(primary_key=True)  # 产品名称
     category = columns.Text(primary_key=True)  # 类别: 日最高访问量、月最高访问量
-    value = columns.Text()  # 统计数值
+    value = columns.Integer(default=0)  # 统计数值
     time_code = columns.Text(required=False)  # 20200124、202002
 
 
@@ -121,7 +121,7 @@ class Total(Model):
 
     product_name = columns.Text(primary_key=True)  # 产品名称
     time_code = columns.Text(primary_key=True)  # 20200124、202002、2020
-    value = columns.Text()  # 统计数值
+    value = columns.Integer(default=0)  # 统计数值
 
 
 print('cassandra database init')
