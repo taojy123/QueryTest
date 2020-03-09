@@ -30,7 +30,6 @@ class QueryStatistics(Model):
     price = columns.VarInt(default=0)  # 总价
     product_code = columns.Text(required=False)  # 产品编码
     remark = columns.Text(required=False)  # 备注
-    created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
 
 
 class QueryDetail(Model):
@@ -55,7 +54,6 @@ class QueryDetail(Model):
     period = columns.Text(required=False)  # 响应时间（毫秒）
     product_code = columns.Text(required=False)  # 产品编码
     remark = columns.Text(required=False)  # 备注
-    created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
     
     def save_redundant(self):
         """
@@ -77,9 +75,9 @@ class QueryDetail2(Model):
     __table_name__ = 'query_detail2'
 
     # QueryDetail 保持一致
-    time_code = columns.Text(required=True)  # 统计日期 20200124
-    product_name = columns.Text(required=True)  # 产品名称
-    result = columns.Text(required=True)  # 查询结果: 查得、未查得、出错、超时
+    time_code = columns.Text(primary_key=True)  # 统计日期 20200124
+    product_name = columns.Text(primary_key=True)  # 产品名称
+    result = columns.Text(primary_key=True)  # 查询结果: 查得、未查得、出错、超时
     query_id = columns.Text(primary_key=True)  # 请求序列号
     time = columns.Text(required=False)  # 请求时间: 2020-02-21 10:20:40
     price_rule = columns.Text(required=False)  # 计价方式: 查得计费、字段计费、查询计费（由产品决定）
@@ -91,7 +89,6 @@ class QueryDetail2(Model):
     period = columns.Text(required=False)  # 响应时间（毫秒）
     product_code = columns.Text(required=False)  # 产品编码
     remark = columns.Text(required=False)  # 备注
-    created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
     
     def save_redundant(self):
         pass
