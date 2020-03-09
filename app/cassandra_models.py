@@ -68,13 +68,17 @@ class QueryDetail(Model):
         """
         detail2 = QueryDetail2()
         
+        print('1111111')
         for name, value in self.items():
             if detail2._columns[name].primary_key:
+                print(detail2._columns[name])
                 setattr(detail2, name, value)
         detail2.save()
         
+        print('22222222')
         for name, value in self.items():
             if not detail2._columns[name].primary_key:
+                print(detail2._columns[name])
                 setattr(detail2, name, value)
         detail2.save()
 
