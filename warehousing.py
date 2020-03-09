@@ -51,8 +51,8 @@ for msg in consumer:
     value = json.loads(msg.value)
     message = json.loads(value['message'])
     
-    started_at = message['started_time']  # ms
-    finished_at = message['finished_time']  # ms
+    started_at = message['started_at']  # ms
+    finished_at = message['finished_at']  # ms
     started_time = datetime.datetime.fromtimestamp(started_at / 1000)
     finished_time = datetime.datetime.fromtimestamp(finished_at / 1000)
 
