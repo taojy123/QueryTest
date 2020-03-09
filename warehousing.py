@@ -16,6 +16,13 @@ KAFKA_HOST = os.getenv('KAFKA_HOST', '172.23.43.21:9092')
 consumer = KafkaConsumer('querymessages', bootstrap_servers=KAFKA_HOST, group_id='warehousing-querymessages')
 
 
+def get_or_create(ModelClass, **kwargs):
+    r = ModelClass.objects.filter(**kwargs).first()
+    if not r:
+        r = ModelClass.create(**kwargs)
+    return r
+
+
 def statistics_count(detail, time_code):
     
     period_s = int(detail.period) / 1000
@@ -32,7 +39,7 @@ def statistics_count(detail, time_code):
     else:
         period = '15秒以上'
     
-    r = QueryStatistics.create(time_code=time_code, product_name=detail.product_name, result=detail.result, period=period)
+    r = get_or_create(QueryStatistics, time_code=time_code, product_name=detail.product_name, result=detail.result, period=period)
     r.count += 1
     r.price_rule = detail.price_rule
     r.unit_price = detail.unit_price
@@ -95,25 +102,25 @@ for msg in consumer:
     statistics_count(detail, month_code)
     statistics_count(detail, day_code)
 
-    r = Total.create(product_name=product_name, time_code=year_code)
+    r = get_or_create(Total, product_name=product_name, time_code=year_code)
     r.value += 1
     r.save()
 
-    r = Total.create(product_name=product_name, time_code=month_code)
+    r = get_or_create(Total, product_name=product_name, time_code=month_code)
     r.value += 1
     r.save()
 
-    best = Best.create(product_name=product_name, category='月最高访问量')
+    best = get_or_create(Best, product_name=product_name, category='月最高访问量')
     if r.value >= best.value:
         best.value = r.value
         best.time_code = r.time_code
         best.save()
 
-    r = Total.create(product_name=product_name, time_code=day_code)
+    r = get_or_create(Total, product_name=product_name, time_code=day_code)
     r.value += 1
     r.save()
 
-    best = Best.create(product_name=product_name, category='日最高访问量')
+    best = get_or_create(Best, product_name=product_name, category='日最高访问量')
     if r.value >= best.value:
         best.value = r.value
         best.time_code = r.time_code
