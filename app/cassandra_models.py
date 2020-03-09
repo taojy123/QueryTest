@@ -87,6 +87,9 @@ class QueryDetail2(QueryDetail):
     time = columns.Text(primary_key=True)
     query_id = columns.Text(primary_key=True)
 
+    def save_redundant(self):
+        pass
+
 
 class Best(Model):
     """
