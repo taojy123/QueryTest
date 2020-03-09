@@ -5,7 +5,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed, Http
 from django.shortcuts import render
 from django.utils import timezone
 
-from app.cassandra_models import QueryStatistics, QueryDetail2, Best
+from app.cassandra_models import QueryStatistics, QueryDetail2, Best, Total
 from app.models import Trial
 
 
@@ -273,7 +273,8 @@ def api_best_month(request):
 def api_total_year(request):
     product_name = request.GET.get('product_name')
     try:
-        r = Best.objects.filter(product_name=product_name, category='当年累计访问量').limit(1)[0]
+        year_code = timezone.now().strftime('%Y')
+        r = Total.objects.filter(product_name=product_name, time_code=year_code).limit(1)[0]
     except IndexError as e:
         return HttpResponseNotFound()
     r = {

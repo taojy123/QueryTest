@@ -4,8 +4,7 @@ import os
 
 from kafka import KafkaConsumer
 
-from app.cassandra_models import QueryStatistics, QueryDetail
-
+from app.cassandra_models import QueryStatistics, QueryDetail, Best, Total
 
 # export CASS_HOSTS=172.23.43.16,172.23.43.21,172.23.43.22
 # export KAFKA_HOST=172.23.43.21:9092
@@ -33,11 +32,7 @@ def statistics_count(detail, time_code):
     else:
         period = '15秒以上'
     
-    rs = QueryStatistics.filter(time_code=time_code, product_name=detail.product_name, result=detail.result, period=period).limit(1)
-    if rs:
-        r = rs[0]
-    else:
-        r = QueryStatistics.create(time_code=time_code, product_name=detail.product_name, result=detail.result, period=period)
+    r = QueryStatistics.create(time_code=time_code, product_name=detail.product_name, result=detail.result, period=period)
     r.count += 1
     r.price_rule = detail.price_rule
     r.unit_price = detail.unit_price
@@ -99,6 +94,30 @@ for msg in consumer:
     statistics_count(detail, year_code)
     statistics_count(detail, month_code)
     statistics_count(detail, day_code)
+
+    r = Total.create(product_name=product_name, time_code=year_code)
+    r.value += 1
+    r.save()
+
+    r = Total.create(product_name=product_name, time_code=month_code)
+    r.value += 1
+    r.save()
+
+    best = Best.create(product_name=product_name, category='月最高访问量')
+    if r.value >= best.value:
+        best.value = r.value
+        best.time_code = r.time_code
+        best.save()
+
+    r = Total.create(product_name=product_name, time_code=day_code)
+    r.value += 1
+    r.save()
+
+    best = Best.create(product_name=product_name, category='日最高访问量')
+    if r.value >= best.value:
+        best.value = r.value
+        best.time_code = r.time_code
+        best.save()
 
 
 message = {
