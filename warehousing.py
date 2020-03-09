@@ -19,7 +19,7 @@ consumer = KafkaConsumer('querymessages', bootstrap_servers=KAFKA_HOST, group_id
 
 def statistics_count(detail, time_code):
     
-    period_s = detail.period / 1000
+    period_s = int(detail.period) / 1000
     if period_s < 1:
         period = '1秒以内'
     elif period_s < 3:
@@ -46,6 +46,8 @@ def statistics_count(detail, time_code):
     r.save()
 
 
+print('============ start warehousing =============')
+
 for msg in consumer:
     print(msg.topic, msg.offset)
     value = json.loads(msg.value)
@@ -67,7 +69,7 @@ for msg in consumer:
     response = json.dumps(message['response'])
     status_code = str(message['response']['status'])
     return_time = finished_time.strftime('%Y-%m-%d %H:%M:%S')
-    period = finished_at - started_at  # ms
+    period = str(finished_at - started_at)  # ms
     product_code = message['service']['name']
     
     if int(status_code) >= 400:
