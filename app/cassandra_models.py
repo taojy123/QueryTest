@@ -146,6 +146,7 @@ sync_table(QueryStatistics)
 sync_table(QueryDetail)
 sync_table(QueryDetail2)
 sync_table(Best)
+sync_table(Total)
 
 print('database synced')
 
