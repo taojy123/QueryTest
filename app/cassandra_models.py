@@ -72,7 +72,7 @@ class QueryDetail(Model):
         detail2.save()
 
 
-class QueryDetail2(Model):
+class QueryDetail2(QueryDetail):
     """
     请求详情日志
     冗余
