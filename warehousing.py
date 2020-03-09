@@ -90,6 +90,7 @@ for msg in consumer:
         period=period,
         product_code=product_code,
     )
+    detail.save_redundant()
 
     year_code = time_code[:4]
     month_code = time_code[:6]

@@ -56,30 +56,14 @@ class QueryDetail(Model):
     product_code = columns.Text(required=False)  # 产品编码
     remark = columns.Text(required=False)  # 备注
     created_at = columns.DateTime(default=datetime.datetime.now)  # 生成时间
-        
-    def save(self):
-        instance = super().save()
-        instance.save_redundant()
-        return instance
     
     def save_redundant(self):
         """
         保存冗余数据
         """
         detail2 = QueryDetail2()
-        
-        print('1111111')
         for name, value in self.items():
-            if detail2._columns[name].primary_key:
-                print(detail2._columns[name])
-                setattr(detail2, name, value)
-        detail2.save()
-        
-        print('22222222')
-        for name, value in self.items():
-            if not detail2._columns[name].primary_key:
-                print(detail2._columns[name])
-                setattr(detail2, name, value)
+            setattr(detail2, name, value)
         detail2.save()
 
 
